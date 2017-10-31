@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/andreynovikov/Geo-Coordinate-Conversion-Java.svg?branch=master)](https://travis-ci.org/andreynovikov/Geo-Coordinate-Conversion-Java)
+[![Release](https://jitpack.io/v/andreynovikov/Geo-Coordinate-Conversion-Java.svg)](https://jitpack.io/#andreynovikov/Geo-Coordinate-Conversion-Java)
 
 This is a fork of the NASA library which:
 
