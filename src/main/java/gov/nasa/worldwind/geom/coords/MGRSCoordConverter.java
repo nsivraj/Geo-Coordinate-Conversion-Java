@@ -514,9 +514,10 @@ class MGRSCoordConverter
                 {
                     if (MGRS.latitudeBand < LETTER_N)
                         hemisphere = AVKey.SOUTH;
-                    else
+                    else {
                         hemisphere = AVKey.NORTH;
-
+                    }
+                    
                     getGridValues(MGRS.zone);
 
                     // Check that the second letter of the MGRS string is within
@@ -564,7 +565,7 @@ class MGRSCoordConverter
 
                             try
                             {
-                                UTM = UTMCoord.fromUTM(MGRS.zone, hemisphere, easting, northing);
+                                UTM = UTMCoord.fromUTM(MGRS.zone, Character.toString(alphabet.charAt(MGRS.latitudeBand)), hemisphere, easting, northing);
                                 latitude = UTM.getLatitude().radians;
                                 divisor = Math.pow(10.0, MGRS.precision);
                                 error_code = getLatitudeRange(MGRS.latitudeBand);

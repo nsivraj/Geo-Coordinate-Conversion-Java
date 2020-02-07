@@ -22,6 +22,7 @@ public class UTMCoord
     private final Angle longitude;
     private final String hemisphere;
     private final int zone;
+    private final String zoneLetter;
     private final double easting;
     private final double northing;
     private Angle centralMeridian;
@@ -31,7 +32,6 @@ public class UTMCoord
      *
      * @param latitude  the latitude <code>Angle</code>.
      * @param longitude the longitude <code>Angle</code>.
-     * @param globe     the <code>Globe</code> - can be null (will use WGS84).
      *
      * @return the corresponding <code>UTMCoord</code>.
      *
@@ -53,7 +53,7 @@ public class UTMCoord
             throw new IllegalArgumentException("UTM Conversion Error");
         }
 
-        return new UTMCoord(latitude, longitude, converter.getZone(), converter.getHemisphere(),
+        return new UTMCoord(latitude, longitude, converter.getZone(), converter.getZoneLetter(), converter.getHemisphere(),
             converter.getEasting(), converter.getNorthing(), Angle.fromRadians(converter.getCentralMeridian()));
     }
 
@@ -84,7 +84,7 @@ public class UTMCoord
             throw new IllegalArgumentException("UTM Conversion Error");
         }
 
-        return new UTMCoord(latitude, longitude, converter.getZone(), converter.getHemisphere(),
+        return new UTMCoord(latitude, longitude, converter.getZone(), converter.getZoneLetter(), converter.getHemisphere(),
             converter.getEasting(), converter.getNorthing(), Angle.fromRadians(converter.getCentralMeridian()));
     }
 
@@ -92,20 +92,20 @@ public class UTMCoord
      * Create a set of UTM coordinates for the given <code>Globe</code>.
      *
      * @param zone       the UTM zone - 1 to 60.
+     * @param zoneLetter the zone letter mapped to the latitude - CDEFGHJKLMNPQRSTUVWXX
      * @param hemisphere the hemisphere, either {@link gov.nasa.worldwind.avlist.AVKey#NORTH} or {@link
      *                   gov.nasa.worldwind.avlist.AVKey#SOUTH}.
      * @param easting    the easting distance in meters
      * @param northing   the northing distance in meters.
-     * @param globe      the <code>Globe</code> - can be null (will use WGS84).
      *
      * @return the corresponding <code>UTMCoord</code>.
      *
      * @throws IllegalArgumentException if the conversion to UTM coordinates fails.
      */
-    public static UTMCoord fromUTM(int zone, String hemisphere, double easting, double northing)
+    public static UTMCoord fromUTM(int zone, String zoneLetter, String hemisphere, double easting, double northing)
     {
         final UTMCoordConverter converter = new UTMCoordConverter();
-        long err = converter.convertUTMToGeodetic(zone, hemisphere, easting, northing);
+        long err = converter.convertUTMToGeodetic(zone, zoneLetter, hemisphere, easting, northing);
 
         if (err != UTMCoordConverter.UTM_NO_ERROR)
         {
@@ -114,24 +114,24 @@ public class UTMCoord
 
         return new UTMCoord(Angle.fromRadians(converter.getLatitude()),
             Angle.fromRadians(converter.getLongitude()),
-            zone, hemisphere, easting, northing, Angle.fromRadians(converter.getCentralMeridian()));
+            zone, zoneLetter, hemisphere, easting, northing, Angle.fromRadians(converter.getCentralMeridian()));
     }
 
     /**
      * Convenience method for converting a UTM coordinate to a geographic location.
      *
      * @param zone       the UTM zone: 1 to 60.
+     * @param zoneLetter the zone letter mapped to the latitude - CDEFGHJKLMNPQRSTUVWXX
      * @param hemisphere the hemisphere, either {@link gov.nasa.worldwind.avlist.AVKey#NORTH} or {@link
      *                   gov.nasa.worldwind.avlist.AVKey#SOUTH}.
      * @param easting    the easting distance in meters
      * @param northing   the northing distance in meters.
-     * @param globe      the <code>Globe</code>. Can be null (will use WGS84).
      *
      * @return the geographic location corresponding to the specified UTM coordinate.
      */
-    public static LatLon locationFromUTMCoord(int zone, String hemisphere, double easting, double northing)
+    public static LatLon locationFromUTMCoord(int zone, String zoneLetter, String hemisphere, double easting, double northing)
     {
-        UTMCoord coord = UTMCoord.fromUTM(zone, hemisphere, easting, northing);
+        UTMCoord coord = UTMCoord.fromUTM(zone, zoneLetter, hemisphere, easting, northing);
         return new LatLon(coord.getLatitude(), coord.getLongitude());
     }
 
@@ -141,6 +141,7 @@ public class UTMCoord
      * @param latitude   the latitude <code>Angle</code>.
      * @param longitude  the longitude <code>Angle</code>.
      * @param zone       the UTM zone - 1 to 60.
+     * @param zoneLetter the zone letter mapped to the latitude - CDEFGHJKLMNPQRSTUVWXX
      * @param hemisphere the hemisphere, either {@link gov.nasa.worldwind.avlist.AVKey#NORTH} or {@link
      *                   gov.nasa.worldwind.avlist.AVKey#SOUTH}.
      * @param easting    the easting distance in meters
@@ -148,9 +149,9 @@ public class UTMCoord
      *
      * @throws IllegalArgumentException if <code>latitude</code> or <code>longitude</code> is null.
      */
-    public UTMCoord(Angle latitude, Angle longitude, int zone, String hemisphere, double easting, double northing)
+    public UTMCoord(Angle latitude, Angle longitude, int zone, String zoneLetter, String hemisphere, double easting, double northing)
     {
-        this(latitude, longitude, zone, hemisphere, easting, northing, Angle.fromDegreesLongitude(0.0));
+        this(latitude, longitude, zone, zoneLetter, hemisphere, easting, northing, Angle.fromDegreesLongitude(0.0));
     }
 
     /**
@@ -159,6 +160,7 @@ public class UTMCoord
      * @param latitude        the latitude <code>Angle</code>.
      * @param longitude       the longitude <code>Angle</code>.
      * @param zone            the UTM zone - 1 to 60.
+     * @param zoneLetter the zone letter mapped to the latitude - CDEFGHJKLMNPQRSTUVWXX
      * @param hemisphere      the hemisphere, either {@link gov.nasa.worldwind.avlist.AVKey#NORTH} or {@link
      *                        gov.nasa.worldwind.avlist.AVKey#SOUTH}.
      * @param easting         the easting distance in meters
@@ -167,7 +169,7 @@ public class UTMCoord
      *
      * @throws IllegalArgumentException if <code>latitude</code> or <code>longitude</code> is null.
      */
-    public UTMCoord(Angle latitude, Angle longitude, int zone, String hemisphere, double easting, double northing,
+    public UTMCoord(Angle latitude, Angle longitude, int zone, String zoneLetter, String hemisphere, double easting, double northing,
         Angle centralMeridian)
     {
         if (latitude == null || longitude == null)
@@ -179,6 +181,7 @@ public class UTMCoord
         this.longitude = longitude;
         this.hemisphere = hemisphere;
         this.zone = zone;
+        this.zoneLetter = zoneLetter;
         this.easting = easting;
         this.northing = northing;
         this.centralMeridian = centralMeridian;
@@ -209,6 +212,11 @@ public class UTMCoord
         return this.hemisphere;
     }
 
+    public String getZoneLetter()
+    {
+        return this.zoneLetter;
+    }
+
     public double getEasting()
     {
         return this.easting;
@@ -222,7 +230,8 @@ public class UTMCoord
     public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(zone).append(AVKey.NORTH.equals(hemisphere) ? "N" : "S");
+		//sb.append(zone).append(AVKey.NORTH.equals(hemisphere) ? "N" : "S");
+        sb.append(zone).append(zoneLetter);
 		sb.append(" ").append(Math.round(easting));
 		sb.append(" ").append(Math.round(northing));
 		return sb.toString();

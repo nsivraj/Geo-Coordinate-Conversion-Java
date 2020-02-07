@@ -52,6 +52,7 @@ class UTMCoordConverter
     private final static int MAX_EASTING = 900000;
     private final static int MIN_NORTHING = 0;
     private final static int MAX_NORTHING = 10000000;
+    public static final String zoneLetters = "CDEFGHJKLMNPQRSTUVWXX";
 
     private double UTM_a = 6378137.0;         /* Semi-major axis of ellipsoid in meters  */
     private double UTM_f = 1 / 298.257223563; /* Flattening of ellipsoid                 */
@@ -60,6 +61,7 @@ class UTMCoordConverter
     private double Easting;
     private double Northing;
     private String Hemisphere;
+    private String ZoneLetter;
     private int Zone;
     private double Latitude;
     private double Longitude;
@@ -107,6 +109,14 @@ class UTMCoordConverter
             UTM_Override = override;
         }
         return (Error_Code);
+    }
+
+    public String lat2ZoneLetter(double lat) {
+        if (-80 <= lat && lat <= 84) {
+            return Character.toString(zoneLetters.charAt(((int)(lat + 80)) >> 3));
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -189,8 +199,11 @@ class UTMCoordConverter
                     False_Northing = 10000000;
                     Hemisphere = AVKey.SOUTH;
                 }
-                else
+                else {
                     Hemisphere = AVKey.NORTH;
+                }
+
+                ZoneLetter = lat2ZoneLetter(Latitude);
 
                 try
                 {
@@ -235,6 +248,10 @@ class UTMCoordConverter
         return Hemisphere;
     }
 
+    public String getZoneLetter() {
+        return ZoneLetter;
+    }
+
     /** @return UTM zone */
     public int getZone()
     {
@@ -242,11 +259,12 @@ class UTMCoordConverter
     }
 
     /**
-     * The function Convert_UTM_To_Geodetic converts UTM projection (zone, hemisphere, easting and northing) coordinates
+     * The function Convert_UTM_To_Geodetic converts UTM projection (zone, zoneLetter, hemisphere, easting and northing) coordinates
      * to geodetic(latitude and  longitude) coordinates, according to the current ellipsoid parameters.  If any errors
      * occur, the error code(s) are returned by the function, otherwise UTM_NO_ERROR is returned.
      *
      * @param Zone       UTM zone.
+     * @param ZoneLetter the zone letter mapped to the latitude - CDEFGHJKLMNPQRSTUVWXX
      * @param Hemisphere The coordinate hemisphere, either {@link gov.nasa.worldwind.avlist.AVKey#NORTH} or {@link
      *                   gov.nasa.worldwind.avlist.AVKey#SOUTH}.
      * @param Easting    Easting (X) in meters.
@@ -254,7 +272,7 @@ class UTMCoordConverter
      *
      * @return error code.
      */
-    public long convertUTMToGeodetic(long Zone, String Hemisphere, double Easting, double Northing)
+    public long convertUTMToGeodetic(long Zone, String ZoneLetter, String Hemisphere, double Easting, double Northing)
     {
         // TODO: arg checking
         long Error_Code = UTM_NO_ERROR;
