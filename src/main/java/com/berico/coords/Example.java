@@ -14,7 +14,8 @@ public class Example
 //
 //    		double[] latLon = Coordinates.latLonFromMgrs(mgrs);
 
-		UTMCoord utm = UTMCoord.fromLatLon(Angle.fromDegrees(55.4572156707414D), Angle.fromDegrees(-129.47636882408398));
+		//UTMCoord utm = UTMCoord.fromLatLon(Angle.fromDegrees(-64.24132515751064D), Angle.fromDegrees(-63.339247243762756D));
+        UTMCoord utm = UTMCoord.fromLatLon(Angle.fromDegrees(-64.24132515856515D), Angle.fromDegrees(-63.33924724341925D));
     		System.out.println(
     			String.format("%s", utm));
     }
