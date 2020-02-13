@@ -231,7 +231,7 @@ public class UTMCoord
 	{
 		StringBuilder sb = new StringBuilder();
 		//sb.append(zone).append(AVKey.NORTH.equals(hemisphere) ? "N" : "S");
-        sb.append(zone).append(zoneLetter);
+        sb.append(zone).append(zoneLetter).append(AVKey.NORTH.equals(hemisphere) ? "-[N]" : "-[S]");
 		sb.append(" ").append(Math.round(easting));
 		sb.append(" ").append(Math.round(northing));
 		return sb.toString();

@@ -113,7 +113,7 @@ class UTMCoordConverter
 
     public String lat2ZoneLetter(double lat) {
         if (-80 <= lat && lat <= 84) {
-            return Character.toString(zoneLetters.charAt(((int)(lat + 80)) >> 3));
+            return Character.toString(zoneLetters.charAt(((int)Math.floor(lat + 80)) >> 3));
         } else {
             return "";
         }
@@ -203,7 +203,7 @@ class UTMCoordConverter
                     Hemisphere = AVKey.NORTH;
                 }
 
-                ZoneLetter = lat2ZoneLetter(Latitude);
+                ZoneLetter = lat2ZoneLetter(Lat_Degrees);
 
                 try
                 {
