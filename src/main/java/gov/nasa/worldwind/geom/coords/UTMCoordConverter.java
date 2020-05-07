@@ -27,8 +27,14 @@ class UTMCoordConverter
     public final static double CLARKE_B = 6356583.8;
     public final static double CLARKE_F = 1 / 294.9786982;
 
+    // The WGS 84 datum surface is an oblate spheroid with
+    // equatorial radius a = 6378137 m at the equator and
+    // flattening f = 1/298.257223563.
     public final static double WGS84_A = 6378137;
     public final static double WGS84_F = 1 / 298.257223563;
+    // Polar Radius = equatorial radius * (1 - flattening factor)
+    // This leads to several computed parameters such as the polar semi-minor axis b which equals a × (1 − f) = 6356752.3142 m
+    public final static double WGS84_B = WGS84_A * (1 - WGS84_F);
 
     public final static int UTM_NO_ERROR = 0x0000;
     public final static int UTM_LAT_ERROR = 0x0001;
