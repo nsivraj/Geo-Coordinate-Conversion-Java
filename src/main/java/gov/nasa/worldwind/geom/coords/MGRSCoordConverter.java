@@ -22,7 +22,7 @@ import gov.nasa.worldwind.geom.Angle;
  *
  * @author Garrett Headley, Patrick Murris
  */
-class MGRSCoordConverter
+public class MGRSCoordConverter
 {
     public static final int MGRS_NO_ERROR = 0;
     private static final int MGRS_LAT_ERROR = 0x0001;
@@ -176,7 +176,7 @@ class MGRSCoordConverter
         }
     }
 
-    MGRSCoordConverter(){}
+    public MGRSCoordConverter(){}
 
     /**
      * The function setMGRSParameters receives the ellipsoid parameters and sets the corresponding state variables. If

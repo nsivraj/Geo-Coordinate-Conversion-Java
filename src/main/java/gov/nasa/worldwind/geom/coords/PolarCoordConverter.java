@@ -145,7 +145,7 @@ public class PolarCoordConverter
     private double Latitude;
     private double Longitude;
 
-    PolarCoordConverter()
+    public PolarCoordConverter()
     {
     }
 

@@ -21,7 +21,7 @@ import gov.nasa.worldwind.geom.*;
  *
  * @author Garrett Headley, Patrick Murris
  */
-class UTMCoordConverter
+public class UTMCoordConverter
 {
     public final static double CLARKE_A = 6378206.4;
     public final static double CLARKE_B = 6356583.8;
@@ -73,9 +73,9 @@ class UTMCoordConverter
     private double Longitude;
     private double Central_Meridian;
 
-    UTMCoordConverter(){}
+    public UTMCoordConverter(){}
 
-    UTMCoordConverter(double a, double f)
+    public UTMCoordConverter(double a, double f)
     {
         setUTMParameters(a, f, 0);
     }

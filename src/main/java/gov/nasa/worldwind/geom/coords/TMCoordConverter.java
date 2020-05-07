@@ -18,7 +18,7 @@ package gov.nasa.worldwind.geom.coords;
  *
  * @author Garrett Headley, Patrick Murris
  */
-class TMCoordConverter
+public class TMCoordConverter
 {
     public final static int TRANMERC_NO_ERROR = 0x0000;
     private final static int TRANMERC_LAT_ERROR = 0x0001;
@@ -68,7 +68,7 @@ class TMCoordConverter
     private double Longitude;
     private double Latitude;
 
-    TMCoordConverter()
+    public TMCoordConverter()
     {
     }
 

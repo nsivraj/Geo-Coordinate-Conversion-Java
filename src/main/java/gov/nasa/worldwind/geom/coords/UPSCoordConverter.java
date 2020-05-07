@@ -135,7 +135,7 @@ public class UPSCoordConverter
 
     private PolarCoordConverter polarConverter = new PolarCoordConverter();
 
-    UPSCoordConverter(){}
+    public UPSCoordConverter(){}
 
     /**
      * The function SetUPSParameters receives the ellipsoid parameters and sets the corresponding state variables. If
